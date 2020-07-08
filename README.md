@@ -20,3 +20,4 @@ The input file will have the columns:
 
 Retake column cannot be ticked if there is no retake column empty for that 
 same student on that same subject and that same year.
+Ideally -> 1 excel sheet for each subject.
