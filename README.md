@@ -13,7 +13,6 @@ output file).
 The input file will have the columns:
 - Name of the student
 - Last name of the student
-- Subject
 - Retake (this lets us know if the student retook the exam because he had failed or not)
 - Mark
 - Year
