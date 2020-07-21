@@ -17,13 +17,13 @@ class StudentSubject(Base):
     student_id = Column(
         Integer, ForeignKey("student.id"), primary_key=True, nullable=False
     )
-    student = relationship(
-        "Student", back_populates="subjects", cascade="all, delete",
-    )
-    subject = relationship(
-        "Subject", back_populates="students", cascade="all, delete",
-    )
     mark = Column(Float)
+    subject = relationship(
+        "Subject",  # back_populates='students', cascade='all, delete',
+    )
+    # student = relationship(
+    #     'Student', back_populates='subjects', cascade='all, delete',
+    # )
 
 
 class Student(Base):
@@ -32,7 +32,7 @@ class Student(Base):
     name = Column(String(50))
     last_name = Column(String(50))
     subjects = relationship(
-        "StudentSubject", back_populates="subject", cascade="all, delete",
+        "StudentSubject",  # back_populates='subject', cascade='all, delete',
     )
 
 
@@ -40,13 +40,13 @@ class Subject(Base):
     __tablename__ = "subject"
     id = Column(Integer, primary_key=True, unique=True, nullable=False)
     name = Column(String(50))
-    students = relationship(
-        "StudentSubject", back_populates="student", cascade="all, delete",
-    )
     natural_year = Column(
         String(50)
     )  # year in which the subject is taken (p.e. 2019-2020)
     year = Column(Integer)  # year in which the subject is taught (p.e. 1)
+    # students = relationship(
+    #     'StudentSubject', back_populates='student', cascade='all, delete',
+    # )
 
 
 @contextmanager
