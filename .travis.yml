@@ -9,5 +9,5 @@ cache:
     directories:
         - $HOME/.cache/pre-commit
 # command to run tests
-#script:
-#  - pytest -s tests/
+script:
+  - pytest -s tests/
