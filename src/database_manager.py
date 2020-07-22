@@ -1,16 +1,18 @@
 from typing import List
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from contextlib import contextmanager
 
+from sqlalchemy.orm.exc import FlushError
+
 Base = declarative_base()
 
 
 class StudentSubject(Base):
-    __tablename__ = "student-subject"
+    __tablename__ = "student_subject"
     subject_id = Column(
         Integer, ForeignKey("subject.id"), primary_key=True, nullable=False
     )
@@ -21,9 +23,6 @@ class StudentSubject(Base):
     subject = relationship(
         "Subject",  # back_populates='students', cascade='all, delete',
     )
-    # student = relationship(
-    #     'Student', back_populates='subjects', cascade='all, delete',
-    # )
 
 
 class Student(Base):
@@ -43,16 +42,12 @@ class Subject(Base):
     natural_year = Column(
         String(50)
     )  # year in which the subject is taken (p.e. 2019-2020)
-    year = Column(Integer)  # year in which the subject is taught (p.e. 1)
-    # students = relationship(
-    #     'StudentSubject', back_populates='student', cascade='all, delete',
-    # )
 
 
 @contextmanager
 def session_scope(user, password, host, port, db_name):
     """Provide a transactional scope around a series of operations."""
-    connection_url = f"mysql://{user}:{password}@{host}:{port}/{db_name}"
+    connection_url = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
     engine = create_engine(connection_url)
     Session = sessionmaker(engine)
     session = Session()
@@ -100,12 +95,40 @@ class SchoolDB:
             != 0
         )
 
+    def _get_or_create_subject(
+        self, subject: str, natural_year: str, session
+    ) -> Subject:
+        if not self._subject_on_db(
+            subject=subject, natural_year=natural_year, session=session
+        ):
+            new_subject = Subject(name=subject, natural_year=natural_year)
+        else:
+            new_subject = (
+                session.query(Subject)
+                .filter(
+                    Subject.name == subject,
+                    Subject.natural_year == natural_year,
+                )
+                .first()
+            )
+        return new_subject
+
+    @staticmethod
+    def _subject_on_db(subject: str, natural_year: str, session) -> bool:
+        return (
+            session.query(Subject)
+            .filter(
+                Subject.name == subject, Subject.natural_year == natural_year
+            )
+            .count()
+            != 0
+        )
+
     def store_data_in_db(
         self,
         name: str,
         last_name: str,
         subject: str,
-        year: int,
         natural_year: str,
         mark: float,
     ) -> None:
@@ -119,20 +142,18 @@ class SchoolDB:
             new_student = self._get_or_create_student(
                 name=name, last_name=last_name, session=session
             )
-            link = StudentSubject(mark=mark)
-            link.subject = Subject(
-                name=subject, year=year, natural_year=natural_year
+            student_subject = StudentSubject(mark=mark)
+            student_subject.subject = self._get_or_create_subject(
+                subject=subject, natural_year=natural_year, session=session
             )
-            new_student.subjects.append(link)
-
-    def _append_subject(self, student, subject, session) -> None:
-        pass
-
-    def _append_mark(self, mark):
-        pass
+            # TODO: find a way to handle this exception or preventing from ever happening
+            try:
+                new_student.subjects.append(student_subject)
+            except FlushError:
+                raise FlushError
 
     def get_number_passed_by_subject_and_year(
-        self, subject: str, year: int, natural_year: str
+        self, subject: str, natural_year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -142,19 +163,19 @@ class SchoolDB:
             db_name=self._db_name,
         ) as session:
             return (
-                session.query(Student.name)
+                session.query(Student)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.year == year,
                     Subject.natural_year == natural_year,
-                    Subject.id == StudentSubject.subject_id,
                     StudentSubject.mark >= 5,
                 )
                 .count()
             )
 
     def get_number_failed_by_subject_and_year(
-        self, subject: str, year: int, natural_year: str
+        self, subject: str, natural_year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -164,19 +185,19 @@ class SchoolDB:
             db_name=self._db_name,
         ) as session:
             return (
-                session.query(Student.name)
+                session.query(Student)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.year == year,
                     Subject.natural_year == natural_year,
-                    Subject.id == StudentSubject.subject_id,
                     StudentSubject.mark < 5,
                 )
                 .count()
             )
 
-    def get_list_students_by_subject_and_year(
-        self, subject: str, year: int, natural_year: str
+    def get_list_passed_by_subject_and_year(
+        self, subject: str, natural_year: str
     ) -> List[str]:
         with session_scope(
             user=self._user,
@@ -185,19 +206,81 @@ class SchoolDB:
             port=self._port,
             db_name=self._db_name,
         ) as session:
-            return (
-                session.query(Student.name)
+            students = []
+            query = (
+                session.query(Student.name, Student.last_name)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    StudentSubject.subject_id == Subject.id,
-                    Subject.year == year,
+                    Subject.natural_year == natural_year,
+                    StudentSubject.mark >= 5,
+                )
+                .all()
+            )
+
+            for element in query:
+                students.append(" ".join(element))
+
+        return students
+
+    def get_list_failed_by_subject_and_year(
+        self, subject: str, natural_year: str
+    ) -> List[str]:
+        with session_scope(
+            user=self._user,
+            password=self._password,
+            host=self._host,
+            port=self._port,
+            db_name=self._db_name,
+        ) as session:
+            students = []
+            query = (
+                session.query(Student.name, Student.last_name)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
+                .filter(
+                    Subject.name == subject,
+                    Subject.natural_year == natural_year,
+                    StudentSubject.mark < 5,
+                )
+                .all()
+            )
+
+            for element in query:
+                students.append(" ".join(element))
+
+        return students
+
+    def get_list_students_by_subject_and_year(
+        self, subject: str, natural_year: str
+    ) -> List[str]:
+        with session_scope(
+            user=self._user,
+            password=self._password,
+            host=self._host,
+            port=self._port,
+            db_name=self._db_name,
+        ) as session:
+            students = []
+            query = (
+                session.query(Student.name, Student.last_name)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
+                .filter(
+                    Subject.name == subject,
                     Subject.natural_year == natural_year,
                 )
                 .all()
             )
 
+            for element in query:
+                students.append(" ".join(element))
+
+        return students
+
     def get_number_students_by_subject_and_year(
-        self, subject: str, year: int, natural_year: str
+        self, subject: str, natural_year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -207,19 +290,17 @@ class SchoolDB:
             db_name=self._db_name,
         ) as session:
             return (
-                session.query(Student.name)
+                session.query(Student)
+                .join(StudentSubject, Student.id == StudentSubject.student_id)
+                .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    StudentSubject.subject_id == Subject.id,
-                    Subject.year == year,
                     Subject.natural_year == natural_year,
                 )
                 .count()
             )
 
-    def get_list_subjects_by_year(
-        self, year: int, natural_year: str
-    ) -> List[str]:
+    def get_list_subjects_by_year(self, natural_year: str) -> List[str]:
         with session_scope(
             user=self._user,
             password=self._password,
@@ -227,10 +308,14 @@ class SchoolDB:
             port=self._port,
             db_name=self._db_name,
         ) as session:
-            return (
+            subjects = []
+            query = (
                 session.query(Subject.name)
-                .filter(
-                    Subject.year == year, Subject.natural_year == natural_year
-                )
+                .filter(Subject.natural_year == natural_year)
                 .all()
             )
+
+            for element in query:
+                subjects.append(" ".join(element))
+
+        return subjects
