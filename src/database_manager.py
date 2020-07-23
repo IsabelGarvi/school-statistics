@@ -124,6 +124,23 @@ class SchoolDB:
             != 0
         )
 
+    @staticmethod
+    def _student_subject_on_db(
+        name: str, last_name: str, subject: str, mark: float, session
+    ):
+        return (
+            session.query(Student)
+            .join(StudentSubject, Student.id == StudentSubject.student_id)
+            .join(Subject, StudentSubject.subject_id == Subject.id)
+            .filter(
+                Student.name == name,
+                Student.last_name == last_name,
+                Subject.name == subject,
+                StudentSubject.mark == mark,
+            )
+            .count()
+        )
+
     def store_data_in_db(
         self,
         name: str,
@@ -146,11 +163,16 @@ class SchoolDB:
             student_subject.subject = self._get_or_create_subject(
                 subject=subject, natural_year=natural_year, session=session
             )
-            # TODO: find a way to handle this exception or preventing from ever happening
-            try:
+            if not self._student_subject_on_db(
+                name=name,
+                last_name=last_name,
+                subject=subject,
+                mark=mark,
+                session=session,
+            ):
                 new_student.subjects.append(student_subject)
-            except FlushError:
-                raise FlushError
+            else:
+                print("This data already exists in the database.")
 
     def get_number_passed_by_subject_and_year(
         self, subject: str, natural_year: str
