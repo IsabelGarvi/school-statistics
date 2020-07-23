@@ -1,3 +1,4 @@
+import sys
 from typing import List
 
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
@@ -170,7 +171,7 @@ class SchoolDB:
             ):
                 new_student.subjects.append(student_subject)
             else:
-                print("This data already exists in the database.")
+                sys.stdout.write('This data already exists in the database.\n')
 
     def get_number_passed_by_subject_and_year(
         self, subject: str, natural_year: str
