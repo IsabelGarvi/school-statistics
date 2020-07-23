@@ -6,8 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from contextlib import contextmanager
 
-from sqlalchemy.orm.exc import FlushError
-
 Base = declarative_base()
 
 

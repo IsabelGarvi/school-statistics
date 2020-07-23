@@ -10,4 +10,4 @@ cache:
         - $HOME/.cache/pre-commit
 # command to run tests
 script:
-  - pytest -s tests/
+  - DB_PORT=5432 DB_HOST=127.0.0.1 DB_USER=admin DB_PASS=postgrespassword DB_NAME=postgres pytest -s tests/
