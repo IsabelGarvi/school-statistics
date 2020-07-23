@@ -1,7 +1,6 @@
 import os
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 from src import database_manager
 from src.database_manager import SchoolDB, Student, Subject, StudentSubject
