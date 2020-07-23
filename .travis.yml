@@ -1,9 +1,15 @@
 language: python
 python:
   - "3.7"
-# command to install dependencies
+services:
+  - postgresql
 install:
   - pip install -r requirements.txt
-# command to run tests
+cache:
+    pip: true
+    directories:
+        - $HOME/.cache/pre-commit
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
-  - pytest -s tests/
+  - DB_PORT=5432 DB_HOST=127.0.0.1 DB_USER=postgres DB_NAME=travis_ci_test pytest -s tests/
