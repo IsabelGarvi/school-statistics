@@ -103,14 +103,14 @@ def test_store_data_in_db():
         name="Tov",
         last_name="Rod",
         subject="Math 3",
-        natural_year="2019-2020",
+        year="2019-2020",
         mark=9.9,
     )
     school_data_manager.store_data_in_db(
         name="Isa",
         last_name="Garvi",
         subject="Math 3",
-        natural_year="2019-2020",
+        year="2019-2020",
         mark=2,
     )
 
@@ -121,49 +121,49 @@ def test_store_repeated_subject_in_db():
         name="Mar",
         last_name="Sousa",
         subject="Math 3",
-        natural_year="2019-2020",
+        year="2019-2020",
         mark=8.9,
     )
     school_data_manager.store_data_in_db(
         name="Isa",
         last_name="Garvi",
         subject="Literature 3",
-        natural_year="2019-2020",
+        year="2019-2020",
         mark=3.9,
     )
     school_data_manager.store_data_in_db(
         name="Tov",
         last_name="Rod",
         subject="Science 3",
-        natural_year="2019-2020",
+        year="2019-2020",
         mark=4.9,
     )
     school_data_manager.store_data_in_db(
         name="Isa",
         last_name="Garvi",
         subject="Literature 4",
-        natural_year="2020-2021",
+        year="2020-2021",
         mark=6.9,
     )
 
 
 def test_number_passed_subject():
     result = school_data_manager.get_number_passed_by_subject_and_year(
-        subject="Math 3", natural_year="2019-2020"
+        subject="Math 3", year="2019-2020"
     )
     assert result == 2
 
 
 def test_number_failed_subject():
     result = school_data_manager.get_number_failed_by_subject_and_year(
-        subject="Literature 3", natural_year="2019-2020"
+        subject="Literature 3", year="2019-2020"
     )
     assert result == 1
 
 
 def test_list_passed_subject():
     result = school_data_manager.get_list_passed_by_subject_and_year(
-        subject="Math 3", natural_year="2019-2020"
+        subject="Math 3", year="2019-2020"
     )
 
     assert result[0] == "Tov Rod"
@@ -172,7 +172,7 @@ def test_list_passed_subject():
 
 def test_list_failed_subject():
     result = school_data_manager.get_list_failed_by_subject_and_year(
-        subject="Literature 3", natural_year="2019-2020"
+        subject="Literature 3", year="2019-2020"
     )
 
     assert result[0] == "Isa Garvi"
@@ -180,7 +180,7 @@ def test_list_failed_subject():
 
 def test_number_students_per_subject_in_year():
     result = school_data_manager.get_number_students_by_subject_and_year(
-        subject="Math 3", natural_year="2019-2020"
+        subject="Math 3", year="2019-2020"
     )
 
     assert result == 3
@@ -188,7 +188,7 @@ def test_number_students_per_subject_in_year():
 
 def test_list_students_per_subject_in_year():
     result = school_data_manager.get_list_students_by_subject_and_year(
-        subject="Math 3", natural_year="2019-2020"
+        subject="Math 3", year="2019-2020"
     )
 
     assert result[0] == "Tov Rod"
@@ -197,9 +197,7 @@ def test_list_students_per_subject_in_year():
 
 
 def test_get_list_subjects_by_year():
-    result = school_data_manager.get_list_subjects_by_year(
-        natural_year="2019-2020"
-    )
+    result = school_data_manager.get_list_subjects_by_year(year="2019-2020")
 
     assert result[0] == "Math 3"
     assert result[1] == "Literature 3"
