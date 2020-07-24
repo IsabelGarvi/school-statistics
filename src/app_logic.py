@@ -46,11 +46,9 @@ def get_list_students_in_subject(subject: str, year: str) -> List[str]:
 
 
 def get_total_number_students_in_subject(subject: str, year: str) -> int:
-    pass
-
-
-def get_list_total_students_year(year: str) -> List[str]:
-    pass
+    return SchoolDB.get_number_students_by_subject_and_year(
+        subject=subject, year=year
+    )
 
 
 def get_list_subjects_in_year(year: str) -> List[str]:
