@@ -28,9 +28,12 @@ def get_percentage_failed(subject: str, year: str) -> float:
         subject=subject, year=year
     )
 
-    percentage = float(failed / total)
+    try:
+        percentage = float(failed / total)
 
-    return percentage
+        return percentage
+    except ZeroDivisionError:
+        sys.stderr.write(f"We do not have data for the pairing subject-year.")
 
 
 def get_percentage_passed(subject: str, year: str) -> float:
@@ -41,9 +44,12 @@ def get_percentage_passed(subject: str, year: str) -> float:
         subject=subject, year=year
     )
 
-    percentage = float(passed / total)
+    try:
+        percentage = float(passed / total)
 
-    return percentage
+        return percentage
+    except ZeroDivisionError:
+        sys.stderr.write(f"We do not have data for the pairing subject-year.")
 
 
 def get_list_students_in_subject(subject: str, year: str) -> List[str]:
