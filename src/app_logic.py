@@ -21,10 +21,10 @@ school_data_manager = SchoolDB(
 
 
 def get_percentage_failed(subject: str, year: str) -> float:
-    failed = SchoolDB.get_number_failed_by_subject_and_year(
+    failed = school_data_manager.get_number_failed_by_subject_and_year(
         subject=subject, year=year
     )
-    total = SchoolDB.get_number_students_by_subject_and_year(
+    total = school_data_manager.get_number_students_by_subject_and_year(
         subject=subject, year=year
     )
 
@@ -34,10 +34,10 @@ def get_percentage_failed(subject: str, year: str) -> float:
 
 
 def get_percentage_passed(subject: str, year: str) -> float:
-    passed = SchoolDB.get_number_passed_by_subject_and_year(
+    passed = school_data_manager.get_number_passed_by_subject_and_year(
         subject=subject, year=year
     )
-    total = SchoolDB.get_number_students_by_subject_and_year(
+    total = school_data_manager.get_number_students_by_subject_and_year(
         subject=subject, year=year
     )
 
@@ -47,16 +47,16 @@ def get_percentage_passed(subject: str, year: str) -> float:
 
 
 def get_list_students_in_subject(subject: str, year: str) -> List[str]:
-    return SchoolDB.get_list_students_by_subject_and_year(
+    return school_data_manager.get_list_students_by_subject_and_year(
         subject=subject, year=year
     )
 
 
 def get_total_number_students_in_subject(subject: str, year: str) -> int:
-    return SchoolDB.get_number_students_by_subject_and_year(
+    return school_data_manager.get_number_students_by_subject_and_year(
         subject=subject, year=year
     )
 
 
 def get_list_subjects_in_year(year: str) -> List[str]:
-    return SchoolDB.get_list_subjects_by_year(year=year)
+    return school_data_manager.get_list_subjects_by_year(year=year)
