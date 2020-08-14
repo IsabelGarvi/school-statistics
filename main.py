@@ -1,3 +1,3 @@
-import sys
+from src.user_interaction import UserInteraction
 
-excel_file = sys.argv[1]
+user = UserInteraction()

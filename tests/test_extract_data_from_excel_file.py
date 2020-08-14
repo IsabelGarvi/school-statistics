@@ -1,5 +1,6 @@
 import xlrd
 import pandas as pd
+
 file = "files/test-input.xlsx"
 
 
@@ -13,15 +14,9 @@ def test_data():
     # for sheet in sheets:
     #     sheet.row_values(0) -> we assume the row(0) is the columns name. We need to check
     # this though
-    print(f'Sheets names: {sheets}')
+    print(f"Sheets names: {sheets}")
 
     for sheet in sheets:
         subject = wb.parse(sheet)
         print(subject.columns.values)
         print(subject.rows.values)
-
-
-
-
-
-
