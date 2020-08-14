@@ -4,11 +4,11 @@ from typing import List
 
 from src.database_manager import SchoolDB
 
-db_name = os.getenv("DB_NAME")
-db_user = os.getenv("DB_USER")
-db_pass = os.getenv("DB_PASS")
-db_host = os.getenv("DB_HOST")
-db_port = os.getenv("DB_PORT")
+db_name = os.environ["DB_NAME"]
+db_user = os.environ["DB_USER"]
+db_pass = os.environ["DB_PASS"]
+db_host = os.environ["DB_HOST"]
+db_port = os.environ["DB_PORT"]
 
 
 school_data_manager = SchoolDB(
