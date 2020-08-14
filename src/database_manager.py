@@ -95,30 +95,25 @@ class SchoolDB:
         )
 
     def _get_or_create_subject(
-        self, subject: str, natural_year: str, session
+        self, subject: str, year: str, session
     ) -> Subject:
         if not self._subject_on_db(
-            subject=subject, natural_year=natural_year, session=session
+            subject=subject, year=year, session=session
         ):
-            new_subject = Subject(name=subject, natural_year=natural_year)
+            new_subject = Subject(name=subject, natural_year=year)
         else:
             new_subject = (
                 session.query(Subject)
-                .filter(
-                    Subject.name == subject,
-                    Subject.natural_year == natural_year,
-                )
+                .filter(Subject.name == subject, Subject.natural_year == year,)
                 .first()
             )
         return new_subject
 
     @staticmethod
-    def _subject_on_db(subject: str, natural_year: str, session) -> bool:
+    def _subject_on_db(subject: str, year: str, session) -> bool:
         return (
             session.query(Subject)
-            .filter(
-                Subject.name == subject, Subject.natural_year == natural_year
-            )
+            .filter(Subject.name == subject, Subject.natural_year == year)
             .count()
             != 0
         )
@@ -141,12 +136,7 @@ class SchoolDB:
         )
 
     def store_data_in_db(
-        self,
-        name: str,
-        last_name: str,
-        subject: str,
-        natural_year: str,
-        mark: float,
+        self, name: str, last_name: str, subject: str, year: str, mark: float,
     ) -> None:
         with session_scope(
             user=self._user,
@@ -160,7 +150,7 @@ class SchoolDB:
             )
             student_subject = StudentSubject(mark=mark)
             student_subject.subject = self._get_or_create_subject(
-                subject=subject, natural_year=natural_year, session=session
+                subject=subject, year=year, session=session
             )
             if not self._student_subject_on_db(
                 name=name,
@@ -171,10 +161,10 @@ class SchoolDB:
             ):
                 new_student.subjects.append(student_subject)
             else:
-                sys.stdout.write('This data already exists in the database.\n')
+                sys.stdout.write("This data already exists in the database.\n")
 
     def get_number_passed_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -189,14 +179,14 @@ class SchoolDB:
                 .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.natural_year == natural_year,
+                    Subject.natural_year == year,
                     StudentSubject.mark >= 5,
                 )
                 .count()
             )
 
     def get_number_failed_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -211,14 +201,14 @@ class SchoolDB:
                 .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.natural_year == natural_year,
+                    Subject.natural_year == year,
                     StudentSubject.mark < 5,
                 )
                 .count()
             )
 
     def get_list_passed_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> List[str]:
         with session_scope(
             user=self._user,
@@ -234,7 +224,7 @@ class SchoolDB:
                 .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.natural_year == natural_year,
+                    Subject.natural_year == year,
                     StudentSubject.mark >= 5,
                 )
                 .all()
@@ -246,7 +236,7 @@ class SchoolDB:
         return students
 
     def get_list_failed_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> List[str]:
         with session_scope(
             user=self._user,
@@ -262,7 +252,7 @@ class SchoolDB:
                 .join(Subject, StudentSubject.subject_id == Subject.id)
                 .filter(
                     Subject.name == subject,
-                    Subject.natural_year == natural_year,
+                    Subject.natural_year == year,
                     StudentSubject.mark < 5,
                 )
                 .all()
@@ -274,7 +264,7 @@ class SchoolDB:
         return students
 
     def get_list_students_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> List[str]:
         with session_scope(
             user=self._user,
@@ -288,10 +278,7 @@ class SchoolDB:
                 session.query(Student.name, Student.last_name)
                 .join(StudentSubject, Student.id == StudentSubject.student_id)
                 .join(Subject, StudentSubject.subject_id == Subject.id)
-                .filter(
-                    Subject.name == subject,
-                    Subject.natural_year == natural_year,
-                )
+                .filter(Subject.name == subject, Subject.natural_year == year,)
                 .all()
             )
 
@@ -301,7 +288,7 @@ class SchoolDB:
         return students
 
     def get_number_students_by_subject_and_year(
-        self, subject: str, natural_year: str
+        self, subject: str, year: str
     ) -> int:
         with session_scope(
             user=self._user,
@@ -314,14 +301,11 @@ class SchoolDB:
                 session.query(Student)
                 .join(StudentSubject, Student.id == StudentSubject.student_id)
                 .join(Subject, StudentSubject.subject_id == Subject.id)
-                .filter(
-                    Subject.name == subject,
-                    Subject.natural_year == natural_year,
-                )
+                .filter(Subject.name == subject, Subject.natural_year == year,)
                 .count()
             )
 
-    def get_list_subjects_by_year(self, natural_year: str) -> List[str]:
+    def get_list_subjects_by_year(self, year: str) -> List[str]:
         with session_scope(
             user=self._user,
             password=self._password,
@@ -332,7 +316,7 @@ class SchoolDB:
             subjects = []
             query = (
                 session.query(Subject.name)
-                .filter(Subject.natural_year == natural_year)
+                .filter(Subject.natural_year == year)
                 .all()
             )
 
