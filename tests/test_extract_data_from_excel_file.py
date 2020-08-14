@@ -16,9 +16,9 @@ def test_data():
     # this though
     print(f"Sheets names: {sheets}")
 
-    for sheet in sheets:
-        subject = wb.parse(sheet)
-        print(subject.columns.values)
-        print(subject.rows.values)
+    # for sheet in sheets:
+    # subject = wb.parse(sheet)
+    # print(subject.columns.values)
+    # print(subject.rows.values)
 
     pass
