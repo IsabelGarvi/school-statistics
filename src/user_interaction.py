@@ -28,7 +28,7 @@ class UserInteraction:
 
         if selection != "List of subjects in a year":
             sys.stdout.write(
-                f"Please, input the subject from which you want to obtain the data"
+                f"Please, input the subject from which you want to obtain the data\n"
             )
             subject_name = str(input())
 
@@ -42,13 +42,13 @@ class UserInteraction:
 
     def _get_year_from_input(self):
         sys.stdout.write(
-            f"Please, input the year from which you want to obtain the data"
+            f"Please, input the year from which you want to obtain the data\n"
         )
         return str(input())
 
     def _get_subject_from_input(self):
         sys.stdout.write(
-            f"Please, input the subject from which you want to obtain the data"
+            f"Please, input the subject from which you want to obtain the data\n"
         )
         return str(input())
 
@@ -76,11 +76,12 @@ class UserInteraction:
         return switcher.get(selection)
 
     def _process_and_print_result(self, result: [int, List]):
-        if type(result) is int:
+        if type(result) is int or type(result) is float:
             sys.stdout.write(f"This is the result of your question: {result}")
-        elif type(result) is List:
+        elif type(result) is list:
+            sys.stdout.write(f"This is the result of the search:\n")
             if len(result) == 0:
-                sys.stdout.write(f"The answer for your question is none.")
+                sys.stdout.write(f"none.")
             else:
                 for element in result:
-                    sys.stdout.write(f"{element}")
+                    sys.stdout.write(f"{element}\n")
