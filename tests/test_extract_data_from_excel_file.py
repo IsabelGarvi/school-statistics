@@ -1,24 +1,24 @@
 import xlrd
-import pandas as pd
+from src import excel_file_processing
 
 file = "files/test-input.xlsx"
 
 
-def test_data():
-    # excel_file = open("files/test-input.xlsx", "+r")
-
-    wb = pd.ExcelFile(file)
-    sheets = wb.sheet_names
-    # Get the names of the sheets (subjects) to store in the db with wb.sheet_names()
-    # Get the Columns names of each sheet with
-    # for sheet in sheets:
-    #     sheet.row_values(0) -> we assume the row(0) is the columns name. We need to check
-    # this though
-    print(f"Sheets names: {sheets}")
-
-    # for sheet in sheets:
-    # subject = wb.parse(sheet)
-    # print(subject.columns.values)
-    # print(subject.rows.values)
-
+def test_get_data_from_workbook():
+    excel_wb = xlrd.open_workbook(filename=file)
     pass
+
+
+def test_get_subject_name_and_year():
+    excel_wb = xlrd.open_workbook(filename=file)
+    first_sheet = excel_wb.sheet_by_index(0)
+
+    stuff = excel_file_processing.get_sheet_name_and_year(sheet=first_sheet)
+
+    assert stuff == ("Lit 3", "2019-2020")
+
+
+# def test_get_column_value():
+#     excel_wb = xlrd.open_workbook(filename=file)
+#     for sheet in excel_wb.sheets():
+#         print(sheet.col_values(columnindex))
