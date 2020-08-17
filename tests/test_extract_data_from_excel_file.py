@@ -6,7 +6,6 @@ from unittest.mock import patch
 file = "files/test-input.xlsx"
 
 
-# @patch('src.excel_file_processing._get_sheet_name_and_year')
 def test_get_data_from_workbook():
     excel_file_processing.extract_data_from_file(file=file)
     excel_wb = xlrd.open_workbook(filename=file)
