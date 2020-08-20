@@ -138,7 +138,6 @@ class SchoolDB:
     def store_data_in_db(
         self, name: str, last_name: str, subject: str, year: str, mark: float,
     ) -> None:
-        print(f"--------------{type(name)}")
         with session_scope(
             user=self._user,
             password=self._password,
@@ -161,8 +160,6 @@ class SchoolDB:
                 session=session,
             ):
                 new_student.subjects.append(student_subject)
-            else:
-                sys.stdout.write("This data already exists in the database.\n")
 
     def get_number_passed_by_subject_and_year(
         self, subject: str, year: str
