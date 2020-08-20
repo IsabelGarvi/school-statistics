@@ -138,6 +138,7 @@ class SchoolDB:
     def store_data_in_db(
         self, name: str, last_name: str, subject: str, year: str, mark: float,
     ) -> None:
+        print(f"--------------{type(name)}")
         with session_scope(
             user=self._user,
             password=self._password,

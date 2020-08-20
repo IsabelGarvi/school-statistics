@@ -20,6 +20,17 @@ school_data_manager = SchoolDB(
 )
 
 
+def store_student_data(subject_name, year, student_data) -> None:
+    for student in student_data:
+        school_data_manager.store_data_in_db(
+            name=student[0],
+            last_name=student[1],
+            mark=student[2],
+            subject=subject_name,
+            year=year,
+        )
+
+
 def get_percentage_failed(subject: str, year: str) -> float:
     failed = school_data_manager.get_number_failed_by_subject_and_year(
         subject=subject, year=year
@@ -33,6 +44,7 @@ def get_percentage_failed(subject: str, year: str) -> float:
 
         return percentage
     except ZeroDivisionError:
+        print("failed")
         sys.stderr.write(f"We do not have data for the pairing subject-year.")
 
 
@@ -49,6 +61,7 @@ def get_percentage_passed(subject: str, year: str) -> float:
 
         return percentage
     except ZeroDivisionError:
+        print("passed")
         sys.stderr.write(f"We do not have data for the pairing subject-year.")
 
 

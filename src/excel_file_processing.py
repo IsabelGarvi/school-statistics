@@ -1,14 +1,16 @@
 from typing import List
 import xlrd as xlrd
+from src.app_logic import store_student_data
 
 
-def extract_data_from_file(file) -> tuple:
+def extract_data_from_file(file) -> None:
     workbook = xlrd.open_workbook(filename=file)
     for sheet in workbook.sheets():
         subject_name, year = _get_sheet_name_and_year(sheet=sheet)
         student_data = _get_row_data_from_sheet(sheet=sheet)
-
-    return subject_name, year, student_data
+        store_student_data(
+            subject_name=subject_name, year=year, student_data=student_data
+        )
 
 
 def _get_sheet_name_and_year(sheet) -> tuple:

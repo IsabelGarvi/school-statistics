@@ -1,6 +1,7 @@
 venv/
 .idea
 .gitattributes
+connecting_to_server.txt
 ./.pytest_cache
 tests/__pycache__
 src/__pycache__
