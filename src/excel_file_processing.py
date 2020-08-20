@@ -14,7 +14,7 @@ def _get_sheet_name_and_year(sheet) -> tuple:
     return subject + " " + course, year
 
 
-def _get_columns_data_from_sheet(sheet):
+def _get_row_data_from_sheet(sheet):
     for row_index in range(1, sheet.nrows):
         row_values = sheet.row_values(row_index)
         print(row_values)
