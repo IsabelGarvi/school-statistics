@@ -37,3 +37,14 @@ def test_first_student_data_from_Lit3_20192020():
     )
 
     assert student_data[0] == ["Isa", "Garvi", 9.0]
+
+
+def test_students_data_length_is_five():
+    excel_wb = xlrd.open_workbook(filename=file)
+    first_sheet = excel_wb.sheet_by_index(0)
+
+    student_data = excel_file_processing._get_row_data_from_sheet(
+        sheet=first_sheet
+    )
+
+    assert len(student_data) == 5
