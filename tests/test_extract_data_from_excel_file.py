@@ -13,7 +13,6 @@ def test_get_sheet_name_and_year_called():
         return_value=("Lit 3", "2019-2020"),
     ) as _get_sheet_name_and_year_mock:
         excel_file_processing.extract_data_from_file(file=file)
-        # excel_file_processing._get_sheet_name_and_year(sheet=first_sheet)
 
     _get_sheet_name_and_year_mock.assert_called()
 
