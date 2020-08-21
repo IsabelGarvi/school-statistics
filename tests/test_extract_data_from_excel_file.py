@@ -6,6 +6,18 @@ from unittest.mock import patch
 file = "files/test-input.xlsx"
 
 
+def test_input_file_not_valid():
+    not_excel_file = "files/test-input.xlsx"
+    result = excel_file_processing._is_excel_file(file=not_excel_file)
+    assert result is True
+
+
+def test_input_file_valid():
+    not_excel_file = "files/no-excel-file-test.txt"
+    result = excel_file_processing._is_excel_file(file=not_excel_file)
+    assert result is False
+
+
 def test_get_sheet_name_and_year_called():
     with patch.object(
         excel_file_processing,
