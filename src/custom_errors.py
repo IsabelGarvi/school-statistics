@@ -8,7 +8,7 @@ class NotAnExcelFileError(Error):
     """Raise when the input file is not an Excel file.
 
     Attributes:
-        file: input file that caused the error.
+        file (str): input file that caused the error.
     """
 
     def __init__(self, file):

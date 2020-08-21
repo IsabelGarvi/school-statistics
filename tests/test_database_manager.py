@@ -43,7 +43,7 @@ def test_student_on_db_false():
     assert result is False
 
 
-def test_create_new_student():
+def test_new_student_Isa_created():
     with database_manager.session_scope(
         user=db_user,
         password=db_pass,
@@ -76,7 +76,7 @@ def test_student_on_db_true():
     assert result is True
 
 
-def test_create_repeated_student():
+def test_student_not_added_if_already_exists_in_db():
     with database_manager.session_scope(
         user=db_user,
         password=db_pass,
@@ -115,7 +115,7 @@ def test_store_data_in_db():
     )
 
 
-def test_store_repeated_subject_in_db():
+def test_subject_not_added_if_already_exists_in_db():
     # TODO: query to see if they were added to the db
     school_data_manager.store_data_in_db(
         name="Mar",
@@ -147,14 +147,14 @@ def test_store_repeated_subject_in_db():
     )
 
 
-def test_number_passed_subject():
+def test_two_students_passed_math3_20192020():
     result = school_data_manager.get_number_passed_by_subject_and_year(
         subject="Math 3", year="2019-2020"
     )
     assert result == 2
 
 
-def test_number_failed_subject():
+def test_one_student_failed_lit3_20192020():
     result = school_data_manager.get_number_failed_by_subject_and_year(
         subject="Literature 3", year="2019-2020"
     )
@@ -178,7 +178,7 @@ def test_list_failed_subject():
     assert result[0] == "Isa Garvi"
 
 
-def test_number_students_per_subject_in_year():
+def test_three_students_math3_20192020():
     result = school_data_manager.get_number_students_by_subject_and_year(
         subject="Math 3", year="2019-2020"
     )
