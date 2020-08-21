@@ -110,6 +110,7 @@ def _validate_length_of_sheet_name(splitted_name: List) -> bool:
     return True if len(splitted_name) >= 3 else False
 
 
+# TODO: format the year string
 def _format_year(year: str) -> str:
     """Format the year obtained from the sheet name to the format that we want to insert into the database.
     That format is XXXX-XXXX.
