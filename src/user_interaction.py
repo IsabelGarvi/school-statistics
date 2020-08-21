@@ -52,6 +52,7 @@ class UserInteraction:
         )
         return str(input())
 
+    # TODO: more efficient way of handling the choice?
     def _process_selection(
         self, selection: str, year: str, subject: str = None
     ):
@@ -69,26 +70,6 @@ class UserInteraction:
             )
         else:
             return app_logic.get_list_subjects_in_year(year=year)
-        # TODO: WHY DOES IT CALL FOR THE OTHER FUNCTIONS??!
-        # switcher = {
-        #     "Percentage of students that failed a subject": app_logic.get_percentage_failed(
-        #         subject=subject, year=year
-        #     ),
-        #     "Percentage of students that passed a subject": app_logic.get_percentage_passed(
-        #         subject=subject, year=year
-        #     ),
-        #     "Total number of students taking a subject": app_logic.get_total_number_students_in_subject(
-        #         subject=subject, year=year
-        #     ),
-        #     "List of students in a subject": app_logic.get_list_students_in_subject(
-        #         subject=subject, year=year
-        #     ),
-        #     "List of subjects in a year": app_logic.get_list_subjects_in_year(
-        #         year=year
-        #     ),
-        # }
-
-        # return switcher[selection]
 
     def _process_and_print_result(self, result: [int, List]):
         if type(result) is int or type(result) is float:
