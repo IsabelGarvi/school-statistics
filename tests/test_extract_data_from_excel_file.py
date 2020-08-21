@@ -1,7 +1,9 @@
 import xlrd
+import pytest
 from src import excel_file_processing
 from itertools import product
 from unittest.mock import patch
+from src.custom_errors import NotAnExcelFileError
 
 file = "files/test-input.xlsx"
 
@@ -27,6 +29,12 @@ def test_get_sheet_name_and_year_called():
         excel_file_processing.extract_data_from_file(file=file)
 
     _get_sheet_name_and_year_mock.assert_called()
+
+
+def test_not_an_excel_file_error():
+    not_excel_file = "files/no-excel-file-test.txt"
+    with pytest.raises(NotAnExcelFileError):
+        excel_file_processing.extract_data_from_file(file=not_excel_file)
 
 
 def test_first_sheet_name_lit3_year20192020():

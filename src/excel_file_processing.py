@@ -2,6 +2,7 @@ from typing import List
 import xlrd as xlrd
 import os
 from src.app_logic import store_student_data
+from src.custom_errors import NotAnExcelFileError
 
 
 def _is_excel_file(file) -> bool:
@@ -22,7 +23,7 @@ def extract_data_from_file(file) -> None:
                 subject_name=subject_name, year=year, student_data=student_data
             )
     else:
-        raise FileNotFoundError
+        raise NotAnExcelFileError(file=file)
 
 
 def _get_sheet_name_and_year(sheet) -> tuple:
