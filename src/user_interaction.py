@@ -79,7 +79,7 @@ def _process_and_print_result(result: [int, List]):
     elif type(result) is list:
         sys.stdout.write(f"This is the result of the search:\n")
         if len(result) == 0:
-            sys.stdout.write(f"none.")
+            sys.stdout.write(f"none.\n")
         else:
             for element in result:
                 sys.stdout.write(f"{element}\n")

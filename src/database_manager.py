@@ -64,12 +64,12 @@ def session_scope(user, password, host, port, db_name):
 class SchoolDB:
     """Class to do all the operations on the database.
 
-        Attributes:
-            db_user (str): username of the database.
-            db_pass (str): password for the database.
-            db_host (str): host to connect to the database.
-            db_port (str): port to connect to the database.
-            db_name (str): name of the database to conect to.
+    Attributes:
+        db_user (str): username of the database.
+        db_pass (str): password for the database.
+        db_host (str): host to connect to the database.
+        db_port (str): port to connect to the database.
+        db_name (str): name of the database to conect to.
     """
 
     def __init__(self, db_user, db_pass, db_host, db_port, db_name):
@@ -85,7 +85,8 @@ class SchoolDB:
         last_name: str,
         session: sqlalchemy.orm.session.Session,
     ) -> Student:
-        """Access to the student data on the db and created if it does not exist.
+        """Access to the student data on the db and created if it does not
+        exist.
 
         Args:
             name (str): Name of the student  to be obtained/created.
@@ -132,11 +133,11 @@ class SchoolDB:
     def _get_or_create_subject(
         self, subject: str, year: str, session: sqlalchemy.orm.session.Session
     ) -> Subject:
-        """Access to the subject data on the db and created if it does not exist.
+        """Access to the subject data on the db and created if it does not
+        exist.
 
         Args:
-            subject (str): Name of the subject to be added to the db.
-            year (str): Year to be able to check if the subject exists on the db.
+            subject (str): Name of the subject to be added to the db.s on the db.
             session (sqlalchemy.orm.session.Session): Session to connect to the db.
 
         Returns:
@@ -209,18 +210,16 @@ class SchoolDB:
                 StudentSubject.mark == mark,
             )
             .count()
-            == 0
         )
 
     def store_data_in_db(
         self, name: str, last_name: str, subject: str, year: str, mark: float,
     ) -> None:
-        """Store the data in the db after checking that it does not already exist.
+        """Store the data in the db after checking that it does not already
+        exist.
 
         Args:
-            name (str): Name of the student to add to the db.
-            last_name (str): Last name of the student to add to the db.
-            subject (str): Name of the subject to add to the db.
+            name (str): Name of the student to add to the db.db.
             year (str): Year when the student took the subject to add to the db.
             mark (float): Mark the student got on the subject to add to the db.
         """
@@ -251,14 +250,16 @@ class SchoolDB:
     def get_number_passed_by_subject_and_year(
         self, subject: str, year: str
     ) -> int:
-        """Get number of students that got a mark equal or greater than 5 on a given subject on a given year.
+        """Get number of students that got a mark equal or greater than
+        5 on a given subject on a given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            int: Number of students that passed the subject in the given year as an answer for the query.
+            int: Number of students that passed the subject in the given year
+                as an answer for the query.
         """
         with session_scope(
             user=self._user,
@@ -282,14 +283,16 @@ class SchoolDB:
     def get_number_failed_by_subject_and_year(
         self, subject: str, year: str
     ) -> int:
-        """Get number of students that got a mark less than 5 on a given subject on a given year.
+        """Get number of students that got a mark less than 5 on a given
+        subject on a given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            int: Number of students that failed the subject in the given year as an answer for the query.
+            int: Number of students that failed the subject in the given year
+                as an answer for the query.
         """
         with session_scope(
             user=self._user,
@@ -313,14 +316,16 @@ class SchoolDB:
     def get_list_passed_by_subject_and_year(
         self, subject: str, year: str
     ) -> List[str]:
-        """Get list of students that got a mark equal or greater than 5 on a given subject on a given year.
+        """Get list of students that got a mark equal or greater than 5 on a
+        given subject on a given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            List[str]: List of names and last names of students that passed the subject in the given year as an answer for the query.
+            List[str]: List of names and last named of students that passed
+                the subject on a given year.
         """
         with session_scope(
             user=self._user,
@@ -350,14 +355,16 @@ class SchoolDB:
     def get_list_failed_by_subject_and_year(
         self, subject: str, year: str
     ) -> List[str]:
-        """Get list of students that got a mark less than 5 on a given subject on a given year.
+        """Get list of students that got a mark less than 5 on a given subject
+        on a given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            List[str]: List of names and last names of students that failed the subject in the given year as an answer for the query.
+            List[str]: List of names and last named of students that failed
+                the subject on a given year.
         """
         with session_scope(
             user=self._user,
@@ -387,14 +394,16 @@ class SchoolDB:
     def get_list_students_by_subject_and_year(
         self, subject: str, year: str
     ) -> List[str]:
-        """Get list of students that were enrolled on a given subject on a given year.
+        """Get list of students that were enrolled on a given subject on a
+        given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            List[str]: List of names and last names of students that were enrolled on the subject in the given year as an answer for the query.
+            List[str]: List of names and last named of students that were
+                enrolled on a subject in a given year.
         """
         with session_scope(
             user=self._user,
@@ -420,14 +429,16 @@ class SchoolDB:
     def get_number_students_by_subject_and_year(
         self, subject: str, year: str
     ) -> int:
-        """Get the number of students that were enrolled on a subject in a given year.
+        """Get the number of students that were enrolled on a subject in a
+        given year.
 
         Args:
             subject (str): Name of the subject to consult.
             year (str): Year the subject was taught to consult.
 
         Returns:
-            int: Response from the query on how many students were enrolled in the subject in the given year.
+            int: number of students that were enrolled on a subject in a
+                given year.
         """
         with session_scope(
             user=self._user,
@@ -451,7 +462,8 @@ class SchoolDB:
             year (str): Year to obtain the data from.
 
         Returns:
-            List[str]: Response from the query to the db with the subjects that have an entrance with that year.
+            List[str]: Response from the query to the db with the subjects
+                that have an entrance with that year.
         """
         with session_scope(
             user=self._user,

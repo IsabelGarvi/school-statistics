@@ -133,7 +133,6 @@ def _get_row_data_from_sheet(sheet: xlrd.sheet.Sheet) -> List[list]:
     Returns:
         List[list]: List of lists where each element is the data of a student.
     """
-    sys.stdout.write(str(type(sheet)))
     student_data = []
     for row_index in range(1, sheet.nrows):
         student_data.append(sheet.row_values(row_index))
