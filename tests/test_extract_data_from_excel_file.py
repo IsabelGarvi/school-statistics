@@ -41,15 +41,15 @@ def test_invalid_column_order_error():
         excel_file_processing.extract_data_from_file(file=invalid_columns_file)
 
 
-def test_get_sheet_name_and_year_called():
+def test_get_subject_name_and_year_called():
     with patch.object(
         excel_file_processing,
-        "_get_sheet_name_and_year",
+        "_get_subject_name_and_year",
         return_value=("Lit 3", "2019-2020"),
-    ) as _get_sheet_name_and_year_mock:
+    ) as _get_subject_name_and_year_mock:
         excel_file_processing.extract_data_from_file(file=input_file)
 
-    _get_sheet_name_and_year_mock.assert_called()
+    _get_subject_name_and_year_mock.assert_called()
 
 
 def test_not_an_excel_file_error():
@@ -61,7 +61,7 @@ def test_first_sheet_name_lit3_year20192020():
     excel_wb = xlrd.open_workbook(filename=input_file)
     first_sheet = excel_wb.sheet_by_index(0)
 
-    subject_name_and_year = excel_file_processing._get_sheet_name_and_year(
+    subject_name_and_year = excel_file_processing._get_subject_name_and_year(
         sheet=first_sheet
     )
 
