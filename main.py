@@ -1,5 +1,5 @@
 import argparse
-from src.user_interaction import UserInteraction
+from src import user_interaction
 from src.excel_file_processing import extract_data_from_file
 
 
@@ -10,4 +10,4 @@ args = parser.parse_args()
 
 extract_data_from_file(file=args.input_file)
 
-user = UserInteraction()
+user = user_interaction.user_interaction()
