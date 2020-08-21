@@ -20,7 +20,6 @@ school_data_manager = SchoolDB(
 )
 
 
-# TODO: test this function
 def store_student_data(subject_name, year, student_data) -> None:
     for student in student_data:
         school_data_manager.store_data_in_db(

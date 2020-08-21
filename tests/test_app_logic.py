@@ -46,3 +46,12 @@ def test_get_total_number_students_in_subject(
 def test_get_list_subjects_in_year(get_list_subjects_by_year_mock):
     app_logic.get_list_subjects_in_year("2019-2020")
     get_list_subjects_by_year_mock.assert_called_once()
+
+
+@patch("src.database_manager.SchoolDB.store_data_in_db")
+def test_store_data_in_db_called(store_data_in_db_mock):
+    student_data = [["Marina", "sdvsdv", 2.0], ["Pau", "Real", 4.0]]
+    app_logic.store_student_data(
+        subject_name="Lit 4", year="2019-2020", student_data=student_data
+    )
+    store_data_in_db_mock.assert_called()
