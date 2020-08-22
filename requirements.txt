@@ -5,7 +5,6 @@ inquirer==2.7.0
 more-itertools==8.4.0
 numpy==1.19.0
 packaging==20.4
-pandas==1.0.5
 pluggy==0.13.1
 pre-commit-hooks==3.1.0
 psycopg2-binary==2.8.5
